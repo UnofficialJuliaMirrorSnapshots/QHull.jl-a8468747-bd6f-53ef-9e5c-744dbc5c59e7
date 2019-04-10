@@ -2,7 +2,7 @@ import StaticArrays
 import Polyhedra
 
 struct Library <: Polyhedra.Library
-    solver
+    solver::Polyhedra.SolverOrNot
 end
 Library() = Library(nothing)
 _isone(d::Int) = isone(d)
@@ -22,7 +22,7 @@ mutable struct Polyhedron <: Polyhedra.Polyhedron{Float64}
     ext::Union{Nothing, Polyhedra.MixedMatVRep{Float64, Matrix{Float64}}}
     noredundantinequality::Bool
     noredundantgenerator::Bool
-    solver
+    solver::Polyhedra.SolverOrNot
     area::Union{Nothing, Float64}
     volume::Union{Nothing, Float64}
 
@@ -48,7 +48,7 @@ function Polyhedra.similar_type(::Type{<:Polyhedron}, d::Polyhedra.FullDim, ::Ty
     end
 end
 
-Polyhedra.default_solver(p::Polyhedron) = p.solver
+Polyhedra.default_solver(p::Polyhedron; T=nothing) = p.solver
 Polyhedra.supportssolver(::Type{<:Polyhedron}) = true
 
 Polyhedra.hvectortype(::Union{Polyhedron, Type{Polyhedron}}) = Polyhedra.hvectortype(Polyhedra.MixedMatHRep{Float64, Matrix{Float64}})
